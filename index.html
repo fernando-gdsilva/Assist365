@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASSIST365 · Business Case Brasil 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #0C2340;
+    --navy-mid:  #1A3A5C;
+    --blue:      #1E6FBF;
+    --blue-light:#4A9FD4;
+    --teal:      #00B8A9;
+    --teal-light:#E6F8F7;
+    --teal-mid:  #B2E8E4;
+    --gold:      #F59E0B;
+    --red:       #E05252;
+    --green:     #22C55E;
+    --white:     #FFFFFF;
+    --bg:        #F7F9FC;
+    --bg2:       #EEF3FA;
+    --text:      #0C2340;
+    --text-mid:  #2D4A6A;
+    --text-muted:#6B8299;
+    --border:    #D6E4F0;
+    --border-light: #E8F0F8;
+    --radius:    12px;
+    --radius-lg: 20px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ─────────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { height: 32px; }
+  .nav-brand-text { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; }
+  .nav-links { display: flex; gap: 0; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+    font-weight: 500; padding: 0.35rem 0.9rem; border-radius: 100px;
+    transition: all .2s;
+  }
+  .nav-links a:hover { color: var(--navy); background: var(--bg2); }
+  .nav-tag { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
+
+  /* ── LAYOUT ──────────────────────────────────── */
+  .section { max-width: 1080px; margin: 0 auto; padding: 5rem 2rem; }
+  .section + .section { padding-top: 0; }
+
+  /* ── SECTION LABEL ───────────────────────────── */
+  .sec-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.6rem;
+  }
+  .sec-label::before { content: ''; width: 20px; height: 2px; background: var(--teal); border-radius: 2px; }
+
+  .sec-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700; line-height: 1.15;
+    color: var(--navy); margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .sec-intro { color: var(--text-muted); font-size: 1rem; max-width: 600px; margin-bottom: 2.5rem; }
+
+  .divider {
+    border: none; height: 1px; margin: 0;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  /* ── FADE IN ─────────────────────────────────── */
+  .fade { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+  .fade.in { opacity: 1; transform: translateY(0); }
+
+  /* ══════════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════════ */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #0D3B6E 100%);
+    color: var(--white); position: relative; overflow: hidden;
+    padding: 7rem 2rem 5rem;
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-bg-circle {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,184,169,0.18) 0%, transparent 70%);
+  }
+  .hero-bg-circle.c1 { width: 600px; height: 600px; top: -200px; right: -100px; }
+  .hero-bg-circle.c2 { width: 300px; height: 300px; bottom: -100px; left: 10%; background: radial-gradient(circle, rgba(74,159,212,0.12) 0%, transparent 70%); }
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,184,169,0.15); border: 1px solid rgba(0,184,169,0.35);
+    color: var(--teal); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 16px; border-radius: 100px; margin-bottom: 1.75rem;
+  }
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); display: inline-block; }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900; line-height: 1.08;
+    letter-spacing: -0.03em; margin-bottom: 1.25rem; max-width: 700px;
+  }
+  .hero-sub {
+    font-size: 1rem; color: rgba(255,255,255,0.6);
+    margin-bottom: 3.5rem; font-weight: 400; max-width: 520px;
+  }
+  .hero-stats { display: flex; gap: 0; flex-wrap: wrap; }
+  .hero-stat {
+    padding: 1.5rem 2rem; border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal); line-height: 1; }
+  .hero-stat-lbl { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* ══════════════════════════════════════════════
+     CARDS
+  ══════════════════════════════════════════════ */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    transition: box-shadow .25s, border-color .25s, transform .25s;
+  }
+  .card:hover { box-shadow: 0 8px 32px rgba(12,35,64,0.08); border-color: var(--blue-light); transform: translateY(-2px); }
+  .card-accent-top { border-top: 3px solid var(--teal); }
+  .card-accent-left { border-left: 3px solid var(--teal); }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 2 — CONTEXTO
+  ══════════════════════════════════════════════ */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+  .metric-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem; text-align: center;
+    transition: box-shadow .2s;
+  }
+  .metric-card:hover { box-shadow: 0 4px 20px rgba(12,35,64,0.07); }
+  .metric-num { font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 700; line-height: 1; margin-bottom: 0.4rem; }
+  .metric-lbl { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+  .metric-sub { font-size: 0.75rem; color: var(--text-muted); }
+  .c-gold { color: var(--gold); }
+  .c-red { color: var(--red); }
+  .c-teal { color: var(--teal); }
+  .c-blue { color: var(--blue); }
+  .c-muted { color: var(--text-muted); }
+  .c-navy { color: var(--navy); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  .table-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .data-table th { background: var(--navy); color: var(--white); font-weight: 600; font-size: 0.78rem; padding: 0.6rem 0.9rem; text-align: left; }
+  .data-table th:first-child { border-radius: 8px 0 0 0; }
+  .data-table th:last-child { border-radius: 0 8px 0 0; }
+  .data-table td { padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border-light); color: var(--text-mid); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg); }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 3 — HIPÓTESES
+  ══════════════════════════════════════════════ */
+  .hyp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
+  .hyp-card { border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--white); overflow: hidden; transition: box-shadow .25s, transform .25s; }
+  .hyp-card:hover { box-shadow: 0 10px 40px rgba(12,35,64,0.1); transform: translateY(-3px); }
+  .hyp-top { padding: 1.5rem 1.5rem 0; }
+  .hyp-tag {
+    display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 12px; border-radius: 100px; margin-bottom: 1rem;
+  }
+  .tag-priority { background: #FEE2E2; color: var(--red); }
+  .tag-relevant { background: #FEF3C7; color: #92400E; }
+  .hyp-num { font-family: 'Fraunces', serif; font-size: 3.5rem; font-weight: 900; line-height: 1; opacity: 0.08; color: var(--navy); margin-bottom: 0.25rem; }
+  .hyp-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.35; }
+  .hyp-body { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+  .hyp-validate { padding: 1rem 1.5rem; margin-top: 1rem; background: var(--bg); border-top: 1px solid var(--border-light); }
+  .hyp-validate-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.35rem; }
+  .hyp-validate-text { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 4 — 90 DIAS
+  ══════════════════════════════════════════════ */
+  .timeline { display: flex; flex-direction: column; gap: 1.25rem; }
+  .tl-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 1.5rem; align-items: center; }
+  @media (max-width: 640px) { .tl-item { grid-template-columns: 40px 1fr; } .tl-impact { display: none; } }
+  .tl-dot {
+    width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700;
+    border: 2px solid; background: var(--white);
+  }
+  .tl-dot.d1 { color: var(--red); border-color: var(--red); }
+  .tl-dot.d2 { color: var(--gold); border-color: var(--gold); }
+  .tl-dot.d3 { color: var(--teal); border-color: var(--teal); }
+  .tl-body {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+    transition: box-shadow .2s;
+  }
+  .tl-body:hover { box-shadow: 0 4px 20px rgba(12,35,64,0.07); }
+  .tl-period { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .tl-period.p1 { color: var(--red); }
+  .tl-period.p2 { color: var(--gold); }
+  .tl-period.p3 { color: var(--teal); }
+  .tl-title { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+  .tl-text { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+  .tl-impact { min-width: 220px; max-width: 240px; font-size: 0.8rem; font-style: italic; padding: 0.9rem 1rem; background: var(--bg); border-radius: var(--radius); border-left: 3px solid; }
+  .tl-impact.i1 { color: var(--red); border-color: var(--red); }
+  .tl-impact.i2 { color: var(--blue); border-color: var(--gold); }
+  .tl-impact.i3 { color: var(--teal); border-color: var(--teal); }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 5 — CANAIS
+  ══════════════════════════════════════════════ */
+  .ch-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; align-items: start; }
+  @media (max-width: 760px) { .ch-cols { grid-template-columns: 1fr; } }
+  .ch-col { display: flex; flex-direction: column; }
+  .ch-col-header {
+    text-align: center; padding: 0.6rem 1rem; border-radius: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.75rem; flex-shrink: 0;
+  }
+  .ch-header-keep { background: #DCFCE7; color: #166534; }
+  .ch-header-change { background: #FEF3C7; color: #92400E; }
+  .ch-header-add { background: var(--teal-light); color: #065F58; }
+  .ch-cards { display: flex; flex-direction: column; gap: 0.75rem; flex: 1; }
+  .ch-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem 1.25rem;
+    border-top: 3px solid; flex: 1;
+  }
+  .ch-card.keep { border-top-color: var(--green); }
+  .ch-card.change { border-top-color: var(--gold); }
+  .ch-card.add { border-top-color: var(--teal); }
+  .ch-card h4 { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 0.35rem; }
+  .ch-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+  .attention-box {
+    background: #FFF8F8; border: 1px solid #FCA5A5; border-left: 4px solid var(--red);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 0.5rem;
+  }
+  .attention-box h4 { font-size: 0.9rem; font-weight: 700; color: var(--red); margin-bottom: 0.4rem; }
+  .attention-box p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 6 — PRICING DADOS
+  ══════════════════════════════════════════════ */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 860px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 500px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.1rem; text-align: center;
+  }
+  .kpi-val { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem; }
+  .kpi-lbl { font-size: 0.78rem; font-weight: 600; color: var(--navy); margin-bottom: 0.15rem; }
+  .kpi-sub { font-size: 0.7rem; color: var(--text-muted); }
+
+  .chart-insights { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.5rem; align-items: start; }
+  @media (max-width: 700px) { .chart-insights { grid-template-columns: 1fr; } }
+  .chart-tabs { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab-btn {
+    font-size: 0.78rem; font-weight: 500; padding: 5px 16px; border-radius: 100px;
+    border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+    cursor: pointer; transition: all .2s; font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .tab-btn.active { background: var(--teal); border-color: var(--teal); color: var(--white); font-weight: 600; }
+  .tab-btn:hover:not(.active) { border-color: var(--teal); color: var(--navy); }
+
+  .chart-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
+  .chart-title { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-align: center; margin-bottom: 1rem; }
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-legend { display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.75rem; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .insights-stack { display: flex; flex-direction: column; gap: 0.9rem; }
+  .insight-item {
+    border-radius: var(--radius); padding: 1rem 1.1rem; border-left: 3px solid;
+    background: var(--white); border: 1px solid var(--border); border-left: 3px solid;
+  }
+  .insight-item h5 { font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+  .insight-item p { font-size: 0.77rem; color: var(--text-muted); line-height: 1.6; }
+  .insight-item.warn { border-left-color: var(--gold); }
+  .insight-item.danger { border-left-color: var(--red); }
+  .insight-item.pos { border-left-color: var(--teal); }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 7 — PRICING REC
+  ══════════════════════════════════════════════ */
+  .rec-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: var(--radius-lg); padding: 1.75rem 2rem; margin-bottom: 1.5rem; color: var(--white);
+  }
+  .rec-banner h3 { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .rec-banner p { font-size: 0.88rem; color: rgba(255,255,255,0.65); }
+  .rec-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .rec-cols { grid-template-columns: 1fr; } }
+  .rec-col { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .rec-col-head { padding: 0.9rem 1.25rem; font-size: 0.82rem; font-weight: 700; color: var(--white); }
+  .rc-teal { background: var(--teal); }
+  .rc-gold { background: var(--gold); }
+  .rc-red { background: var(--red); }
+  .rec-col-body { padding: 1.1rem 1.25rem; }
+  .rec-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .rec-list li { font-size: 0.82rem; color: var(--text-muted); display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .rec-list li::before { content: '→'; flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+  .rec-list.teal li::before { color: var(--teal); }
+  .rec-list.gold li::before { color: var(--gold); }
+  .rec-list.red li::before { color: var(--red); }
+  .important-box {
+    background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--blue);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  }
+  .important-box strong { color: var(--navy); }
+  .important-box p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; margin-top: 0.4rem; }
+
+  /* ══════════════════════════════════════════════
+     SLIDE 8 — IA
+  ══════════════════════════════════════════════ */
+  .ia-grid-top { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 680px) { .ia-grid-top { grid-template-columns: 1fr; } }
+  .ia-block { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
+  .ia-block h4 { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .ia-block h4::before { content: ''; width: 3px; height: 18px; background: var(--teal); border-radius: 2px; }
+  .ia-block p, .ia-block li { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; }
+  .ia-block ol { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .ia-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .ia-block ul li::before { content: '· '; color: var(--teal); font-weight: 700; }
+  .ia-tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  @media (max-width: 560px) { .ia-tools { grid-template-columns: 1fr; } }
+  .ia-tool { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; border-top: 3px solid var(--teal); }
+  .ia-tool h5 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.35rem; }
+  .ia-tool p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+  .ia-bottom { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; }
+  @media (max-width: 680px) { .ia-bottom { grid-template-columns: 1fr; } }
+  .prompt-box {
+    background: var(--navy); border-radius: var(--radius-lg); padding: 1.5rem;
+    position: relative;
+  }
+  .prompt-label {
+    position: absolute; top: -10px; left: 16px;
+    background: var(--white); padding: 0 8px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase; border-radius: 4px;
+  }
+  .prompt-text { font-size: 0.8rem; color: #A8D8D8; line-height: 1.75; font-style: italic; }
+  .prompt-adjust { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.9rem; line-height: 1.6; }
+  .no-ia-box { background: #FFF8F8; border: 1px solid #FCA5A5; border-radius: var(--radius-lg); padding: 1.5rem; }
+  .no-ia-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 0.5rem; }
+  .no-ia-box h5 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+  .no-ia-box p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ══════════════════════════════════════════════
+     CLOSING
+  ══════════════════════════════════════════════ */
+  .closing {
+    background: linear-gradient(135deg, var(--navy) 0%, #0D3B6E 100%);
+    color: var(--white); text-align: center;
+    padding: 7rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .closing-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .closing-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,184,169,0.12) 0%, transparent 70%); }
+  .closing h2 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem; }
+  .closing p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.75; }
+  .closing-line { width: 60px; height: 3px; background: var(--teal); border-radius: 2px; margin: 2rem auto 0; }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    padding: 1.25rem 2rem; text-align: center;
+    font-size: 0.75rem; color: var(--text-muted);
+  }
+
+  /* ── BG ALTERNATION ──────────────────────────── */
+  .bg-alt { background: var(--bg); }
+  .section-wrap { padding: 5rem 0; }
+  .section-wrap.bg-alt { background: var(--bg); }
+
+  /* ── SCROLLBAR ───────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--teal-mid); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero { padding: 5rem 1rem 3.5rem; }
+    .section { padding: 3.5rem 1rem; }
+    .hero-stat { padding: 1rem; }
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <img src="https://assistcdn.s3.us-west-1.amazonaws.com/assets/img/assist-icon.png" alt="ASSIST365 logo" onerror="this.style.display='none'">
+    <span class="nav-brand-text">ASSIST365 · Maio 2026</span>
+  </div>
+  <div class="nav-links">
+    <a href="#diagnostico">Diagnóstico</a>
+    <a href="#noventa">90 Dias</a>
+    <a href="#canais">Canais</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#ia">IA</a>
+  </div>
+  <span class="nav-tag">Growth Marketing Manager Position · Business Case</span>
+</nav>
+
+<!-- ══ HERO ═══════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-inner">
+    <h1>Análise de performance da Assist365 no mercado brasileiro e visão futura</h1>
+    <p class="hero-sub">Diagnóstico estratégico · Decisão de pricing · IA no processo</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">+160%</div>
+        <div class="hero-stat-lbl">crescimento YoY</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">20M+</div>
+        <div class="hero-stat-lbl">viagens anuais no Brasil</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">70%</div>
+        <div class="hero-stat-lbl">revenue em afiliados</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">$35K</div>
+        <div class="hero-stat-lbl">investimento/mês</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 2 — CONTEXTO ═══════════════════════════════════════════════ -->
+<div class="section-wrap bg-alt">
+<div class="section fade" id="diagnostico">
+  <div class="sec-label">Parte 01 — Diagnóstico Estratégico</div>
+  <h2 class="sec-title">Contexto no mercado brasileiro</h2>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-num c-gold">+160%</div>
+      <div class="metric-lbl">Crescimento YoY atual</div>
+      <div class="metric-sub">mas abaixo do esperado</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num c-red">70%</div>
+      <div class="metric-lbl">Revenue via afiliados</div>
+      <div class="metric-sub">alta concentração de canal</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num c-muted">18%</div>
+      <div class="metric-lbl">Paid Media</div>
+      <div class="metric-sub">sem estrutura de atribuição</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num c-muted">8%</div>
+      <div class="metric-lbl">Orgânico + SEO</div>
+      <div class="metric-sub">baixo brand awareness próprio</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="table-label">Mix de revenue por canal</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Canal</th><th>% Revenue</th><th>Situação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Afiliados &amp; Influencers</td><td>70%</td><td>Canal prioritário — alta dependência</td></tr>
+          <tr><td>Paid Media</td><td>18%</td><td>Sem atribuição clara, precisa de olhar local</td></tr>
+          <tr><td>Orgânico + SEO + Direto</td><td>8%</td><td>Baixa penetração, pouco reconhecimento</td></tr>
+          <tr><td>Sales + B2B + Cobranding</td><td>4%</td><td>Sem ownership dedicado</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="table-label">Concentração de afiliados</div>
+      <div class="card" style="padding:1.25rem;">
+        <canvas id="pieChart" height="200" role="img" aria-label="Gráfico de concentração de afiliados"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 3 — HIPÓTESES ═══════════════════════════════════════════════ -->
+<div class="section-wrap">
+<div class="section fade">
+  <div class="sec-label">Parte 01 — Diagnóstico Estratégico</div>
+  <h2 class="sec-title">Por que o Brasil não está no ritmo ideal?</h2>
+
+  <div class="hyp-grid">
+    <!-- H1 -->
+    <div class="hyp-card">
+      <div class="hyp-top">
+        <span class="hyp-tag tag-priority">Hipótese Prioritária</span>
+        <div class="hyp-num">01</div>
+        <div class="hyp-title">Concentração no canal de afiliados</div>
+        <div class="hyp-body">
+          3 afiliados = 45% do revenue do canal (~31% do total do país). O crescimento tem um teto que é o crescimento dessas 3 pessoas — não o do mercado.<br><br>
+          Risco estrutural: se qualquer um deles reduzir frequência ou mudar de parceiro, o impacto é imediato e não linear.
+        </div>
+      </div>
+      <div class="hyp-validate">
+        <div class="hyp-validate-label">Como validar</div>
+        <div class="hyp-validate-text">Curva MoM dos top 3 nos últimos 12 meses · Taxa de ativação da long tail · Novos mid-tiers nos últimos 6 meses</div>
+      </div>
+    </div>
+    <!-- H2 -->
+    <div class="hyp-card">
+      <div class="hyp-top">
+        <span class="hyp-tag tag-relevant">Hipótese Relevante</span>
+        <div class="hyp-num">02</div>
+        <div class="hyp-title">Marca não relevante organicamente no Brasil</div>
+        <div class="hyp-body">
+          Apenas 8% do revenue vem de canais orgânicos — aquisição depende de intermediários ou mídia paga. O mercado brasileiro de seguros de viagem é altamente competitivo, com players consolidados e marcas com mais tempo de presença e reconhecimento local.<br><br>
+          Disputar visibilidade orgânica nesse cenário exige consistência de longo prazo em SEO, LLMO, conteúdo e brand awareness — investimentos ainda não priorizados no Brasil.
+        </div>
+      </div>
+      <div class="hyp-validate">
+        <div class="hyp-validate-label">Como validar</div>
+        <div class="hyp-validate-text">Branded search no Google Search Console · Taxa de tráfego direto · % de clientes sem link de afiliado</div>
+      </div>
+    </div>
+    <!-- H3 -->
+    <div class="hyp-card">
+      <div class="hyp-top">
+        <span class="hyp-tag tag-relevant">Hipótese Relevante</span>
+        <div class="hyp-num">03</div>
+        <div class="hyp-title">Paid Media sem atribuição: $17K/mês sem visão clara</div>
+        <div class="hyp-body">
+          Google sem resultados atribuíveis. Meta com sobreposição de medição com influencers. TikTok Ads early stage. Sem olhar dedicado para diagnóstico e otimização.<br><br>
+          Dinheiro investido sem visão clara dos dados — análise/revisão tem que ser priorizada para um canal de growth e relevância do investimento.
+        </div>
+      </div>
+      <div class="hyp-validate">
+        <div class="hyp-validate-label">Como validar</div>
+        <div class="hyp-validate-text">Relatórios Meta × volume de influencers num período determinado · Se overlap &gt;30%: sobreposição confirmada · Análise 360 em Google: checklist de rastreamento, estrutura das campanhas, funil pós-clique</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 4 — 90 DIAS ═══════════════════════════════════════════════ -->
+<div class="section-wrap bg-alt" id="noventa">
+<div class="section fade">
+  <div class="sec-label">Parte 01 — Plano de Ação</div>
+  <h2 class="sec-title">Os primeiros 90 dias</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot d1">D1</div>
+      <div class="tl-body">
+        <div class="tl-period p1">Dias 1–30 · Prioridade máxima</div>
+        <div class="tl-title">Audit de afiliados + plano de risco de concentração</div>
+        <div class="tl-text">Mapear curva de crescimento individual dos top 10. Identificar afiliados do long tail com potencial de virar mid-tier. Criar critérios claros de tier e considerar programa de aceleração para Top 4–10.</div>
+      </div>
+      <div class="tl-impact i1">→ Redução do risco de concentração + 2–3 novos afiliados mid-tier ativos</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot d2">D2</div>
+      <div class="tl-body">
+        <div class="tl-period p2">Dias 15–60 · Eficiência de budget</div>
+        <div class="tl-title">Reestruturar Paid Media — parar o que não funciona</div>
+        <div class="tl-text">Revisar (considerar pause) Google Ads sem hipóteses claras para o Brasil. Separar campanhas Meta em cold/retargeting com janelas distintas dos influencers. Reforçar TikTok Ads — onde a marca já tem força orgânica e CPM ainda é arbitragem.</div>
+      </div>
+      <div class="tl-impact i2">→ ~40% de redução no desperdício + dados limpos para otimização a partir do dia 60</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot d3">D3</div>
+      <div class="tl-body">
+        <div class="tl-period p3">Dias 30–90 · Novo canal</div>
+        <div class="tl-title">Estrutura mínima de B2B/cobranding</div>
+        <div class="tl-text">Canal em 4% sem ownership. Buscar parceiros estratégicos no Brasil: agências de câmbio, fintechs e agências de viagem pequenas/média, RHs de empresas com viagens corporativas frequentes.</div>
+      </div>
+      <div class="tl-impact i3">→ +2–5% de incremento no revenue mensal sem custo de mídia</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 5 — CANAIS ═══════════════════════════════════════════════ -->
+<div class="section-wrap" id="canais">
+<div class="section fade">
+  <div class="sec-label">Parte 01 — Arquitetura de Canais</div>
+  <h2 class="sec-title">O que mantém, o que muda, o que incorpora</h2>
+
+  <div class="ch-cols">
+    <div class="ch-col">
+      <div class="ch-col-header ch-header-keep">Mantém</div>
+      <div class="ch-cards">
+        <div class="ch-card keep">
+          <h4>Afiliados in-house</h4>
+          <p>Core do negócio. O que muda é o framework de priorização e os critérios de tier. Parar/pausar embaixadores com fee fixo que não cobrem investimento.</p>
+        </div>
+        <div class="ch-card keep">
+          <h4>Freelancers Social/Design</h4>
+          <p>Ganham cadência de briefing alinhada à estratégia, não só execução tática.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-col">
+      <div class="ch-col-header ch-header-change">Muda</div>
+      <div class="ch-cards">
+        <div class="ch-card change">
+          <h4>Governança do Paid Media</h4>
+          <p>Hoje sem dono. Assumo ownership até ter dados para contratar ou terceirizar com visão clara.</p>
+        </div>
+        <div class="ch-card change">
+          <h4>Modelo de atribuição</h4>
+          <p>Last-click 24h para TikTok, 7 dias para Meta. Simples, consistente e não sobreponível com influencers.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-col">
+      <div class="ch-col-header ch-header-add">Incorpora</div>
+      <div class="ch-cards">
+        <div class="ch-card add">
+          <h4>OKRs por canal</h4>
+          <p>3 métricas por canal, revisadas periodicamente. Sem burocracia — só clareza sobre o que funciona.</p>
+        </div>
+        <div class="ch-card add">
+          <h4>Piloto de Partnerships</h4>
+          <p>Construo canal de cobranding enquanto não há ownership dedicado. Prova de conceito inicialmente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="attention-box">
+    <h4>⚠ Ponto de Atenção — Agência SEO europeia</h4>
+    <p>Trabalho estratégico para reduzir dependência de canais pagos — tendência de manutenção. Porém, o custo da agência não está disponível para análise. Recomendação: manter condicionado à revisão de contrato e briefing local. Se o custo não for compatível, avaliar alternativa local/regional.</p>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 6 — PRICING DADOS ═════════════════════════════════════════ -->
+<div class="section-wrap bg-alt" id="pricing">
+<div class="section fade">
+  <div class="sec-label">Parte 02 — Decisão de Pricing</div>
+  <h2 class="sec-title">Wide Cover: o que os dados mostram</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-val c-red">–37%</div><div class="kpi-lbl">reservas totais</div><div class="kpi-sub">sazonalidade + concorrência</div></div>
+    <div class="kpi-card"><div class="kpi-val c-red">–75%</div><div class="kpi-lbl">plano 30K USD</div><div class="kpi-sub">canibalização + fuga ao mercado</div></div>
+    <div class="kpi-card"><div class="kpi-val c-red">–80%</div><div class="kpi-lbl">plano EUR 30K</div><div class="kpi-sub">maior revenue dos dois — atenção</div></div>
+    <div class="kpi-card"><div class="kpi-val c-teal">+33%</div><div class="kpi-lbl">Wide Cover cresceu</div><div class="kpi-sub">único plano positivo em maio</div></div>
+    <div class="kpi-card"><div class="kpi-val c-gold">~500</div><div class="kpi-lbl">reservas perdidas</div><div class="kpi-sub">parte é sazonalidade esperada</div></div>
+  </div>
+
+  <div class="chart-insights">
+    <div class="chart-box">
+      <div class="chart-tabs">
+        <button class="tab-btn active" onclick="switchTab(this,'bookings')">Reservas</button>
+        <button class="tab-btn" onclick="switchTab(this,'revenue')">Revenue (USD)</button>
+        <button class="tab-btn" onclick="switchTab(this,'delta')">Variação %</button>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="barChart" role="img" aria-label="Gráfico comparativo por plano entre abril e maio de 2026"></canvas>
+      </div>
+      <div class="chart-legend" id="chartLegend">
+        <div class="legend-item"><span class="legend-dot" style="background:#00B8A9"></span>Abril 2026</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#1E6FBF"></span>Maio 2026</div>
+      </div>
+    </div>
+    <div class="insights-stack">
+      <div class="insight-item warn">
+        <h5>Sazonalidade pode explicar uma parte, não tudo</h5>
+        <p>Wide Cover já existia em abril — se fosse só canibalização, a queda teria aparecido antes. Hipótese: parte da demanda migrou para concorrência.</p>
+      </div>
+      <div class="insight-item danger">
+        <h5>USD 30K, EUR 30K e Wide Cover: ponto crítico</h5>
+        <p>Coberturas próximas brigando entre si e com o mercado. EUR 30K é o maior revenue por reserva — qualquer decisão precisa considerar essa rentabilidade.</p>
+      </div>
+      <div class="insight-item pos">
+        <h5>Wide Cover tem tração real</h5>
+        <p>Único plano positivo em maio. O produto encontrou demanda — o desafio é reposicionar os planos vizinhos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 7 — PRICING REC ════════════════════════════════════════════ -->
+<div class="section-wrap">
+<div class="section fade">
+  <div class="sec-label">Parte 02 — Decisão de Pricing</div>
+  <h2 class="sec-title">Recomendação: reposicionar e monitorar</h2>
+
+  <div class="rec-banner">
+    <h3>Reposicionar por destino — e ter um plano B para os próximos 60 dias.</h3>
+    <p>Se o reposicionamento não travar a queda em 60 dias, considerar pausar um dos planos de 30K para centralizar a demanda.</p>
+  </div>
+
+  <div class="rec-cols">
+    <div class="rec-col">
+      <div class="rec-col-head rc-teal">Wide Cover: manter e potencializar</div>
+      <div class="rec-col-body">
+        <ul class="rec-list teal">
+          <li>Plano com crescimento — manter</li>
+          <li>Comunicar como escolha para Europa/EUA com rede de prestadores superior</li>
+          <li>Criar argumentário específico para afiliados</li>
+          <li>Parar de posicioná-lo como intermediário entre planos</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rec-col">
+      <div class="rec-col-head rc-gold">30K USD e EUR 30K: reposicionar — e monitorar</div>
+      <div class="rec-col-body">
+        <ul class="rec-list gold">
+          <li>Reposicionar USD 30K como plano de curta distância (AL, Caribe)</li>
+          <li>EUR 30K tem cobertura equivalente ao Wide Cover — revisar arquitetura de preço</li>
+          <li>Se em 60 dias não travar a queda: considerar pausar um dos dois</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rec-col">
+      <div class="rec-col-head rc-red">Vs. concorrência: sinal de alerta</div>
+      <div class="rec-col-body">
+        <ul class="rec-list red">
+          <li>Queda nos planos de 30K sugere oferta competitiva nessa faixa</li>
+          <li>Não responder com guerra de preço — responder com clareza de posicionamento</li>
+          <li>Monitorar share de mercado nos próximos 60 dias antes de qualquer decisão de preço</li>
+          <li>Diferencial de rede na Europa é defensável — explorar esse atributo na comunicação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="important-box">
+    <p><strong>IMPORTANTE:</strong> o número de Reservas mostra que em Abril o plano Wide Cover, em teoria, não impactou os outros planos. Isso ocorreu somente em Maio, mas esses números não são suficientes para dizer o que ocorreu, então segui assumindo a possível canibalização para fazer a análise. Mas, no mundo real, seriam necessários mais dados para entender o contexto correto (porque esse impacto forte em Maio e não em Abril, justamente no primeiro mês do novo produto?).</p>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 8 — IA ═══════════════════════════════════════════════════ -->
+<div class="section-wrap bg-alt" id="ia">
+<div class="section fade">
+  <div class="sec-label">Parte 03 — IA no Processo</div>
+  <h2 class="sec-title">IA como alavanca, não como muleta</h2>
+
+  <div class="ia-grid-top">
+    <div class="ia-block">
+      <h4>Partes do desafio utilizando IA</h4>
+      <p style="margin-bottom:0.6rem;">Utilizei IA em todo o processo. De maneira resumida fiz o seguinte:</p>
+      <ol>
+        <li>Subi o documento no Claude e Gemini com o seguinte prompt: <em>"Analise o documento como um profissional sênior de marketing e responda às perguntas solicitadas. Eu vou me aprofundar no material e nas suas respostas, mas quero ter uma base sólida construída por você para trabalhar em cima dela."</em></li>
+        <li>Segui com o Claude, porque ele foi mais assertivo que o Gemini.</li>
+        <li>A partir daí, revisei todo o conteúdo e debati vários pontos com a IA até chegar no material final.</li>
+        <li>Gerei o documento final através da IA. Eu não sei programar, mas venho entregando materiais em HTML, como esse, utilizando IA.</li>
+      </ol>
+    </div>
+    <div class="ia-block">
+      <h4>2 a 4 ferramentas de IA utilizadas profissionalmente</h4>
+      <p>Há limitação técnica e de segurança no meu trabalho atual (como comentei). Tenho um Sandbox que me dá acesso a algumas IAs, como Claude e GPT, além de skills e App Gallery.</p>
+      <ul style="margin-top:0.5rem;">
+        <li>Claude + App Gallery: Apresentações e estudos de mercado. Automações de marketing.</li>
+        <li>Chat GPT: criação de imagens para e-mails, cards e social</li>
+        <li>Gemini: análise e otimização de Google Ads, SEO e LLMO</li>
+        <li>Todos: tradução, revisão e sugestão de conteúdo no dia a dia corporativo. Sugestão e criação de conteúdos diversos de Marketing e Comunicação.</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="ia-bottom">
+    <div class="prompt-box">
+      <div class="prompt-label">Prompt utilizado + ajuste</div>
+      <p class="prompt-text">"Analise especificamente os dados de venda no Brasil e sugira respostas para as perguntas feitas." (eu já estava no chat com a IA, então não precisei trazer mais contexto para esse pedido).</p>
+      <p class="prompt-adjust">A resposta não "enxergou" a queda global de ~500 Reservas em Maio, então fui questionando e adaptando o conteúdo até chegar na resposta que considerei mais pertinente.<br><br>A sugestão de posicionamento por região veio da IA a partir desse prompt. Achei interessante e utilizei no material.</p>
+    </div>
+    <div class="no-ia-box">
+      <div class="no-ia-label">Quando decido não usar IA</div>
+      <h5>Situação do dia a dia em que não uso IA</h5>
+      <p>A IA me ajuda muito a otimizar a <strong>análise</strong> de performance da minha área e negócio. Eu até peço sugestões de soluções para ela, mas no meu dia a dia, como tenho todo o contexto de negócio, prefiro analisar os dados primeiro, para ter minhas conclusões e só depois pedir sugestões e "debater" com a IA.<br><br>Mas não foi o caso nesse projeto. Uma vez que estava com informações limitadas, não tenho a visão 360 do negócio nem o dia a dia, utilizei a IA para me ajudar com as primeiras visões e fui trabalhando a partir daí. Seguramente otimizou minha análise e construção do racional e material.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ SLIDE 10 — CLOSING ════════════════════════════════════════════════ -->
+<div class="closing">
+  <div class="closing-bg"></div>
+  <div class="closing-inner fade">
+    <div class="sec-label" style="justify-content:center; color:var(--teal); margin-bottom:1.5rem;">Encerramento</div>
+    <h2>Temos produto e estratégia de Marketing. Entregaremos a meta com uma atuação dedicada no Brasil.</h2>
+    <p style="margin-top:1.25rem;">O potencial está mapeado e temos bases sólidas na estratégia de Marketing.<br>Vejo que conseguirei agregar valor atuando localmente. E, com ajustes assertivos, vejo um caminho claro de crescimento para a Assist365 no Brasil.</p>
+    <div class="closing-line"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  ASSIST365 · Brasil &nbsp;|&nbsp; Growth Marketing Manager Position · Business Case
+</footer>
+
+<script>
+// ── FADE IN ──────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+// ── PIE CHART ────────────────────────────────────────
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+new Chart(pieCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Top 3 afiliados (45%)', 'Top 4–10 (30%)', 'Long tail — 130 (25%)'],
+    datasets: [{
+      data: [45, 30, 25],
+      backgroundColor: ['#E05252', '#F59E0B', '#00B8A9'],
+      borderWidth: 2, borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11, family: 'Plus Jakarta Sans' }, color: '#6B8299', padding: 12, boxWidth: 12 } }
+    },
+    cutout: '58%',
+  }
+});
+
+// ── BAR CHART (3 tabs) ───────────────────────────────
+const labels = ['40K Wide Cover','30K USD','50K USD','15K USD','100K USD','EUR 30K','Outros'];
+const data = {
+  bookings: { abril: [284,365,127,212,114,196,10], maio: [379,92,97,101,90,39,24] },
+  revenue:  { abril: [14100,13000,12000,6500,14500,11300,1100], maio: [19700,3000,10300,3100,11300,2600,3600] },
+};
+const deltas = [33,-75,-24,-52,-21,-80,140];
+
+let barChart = null;
+
+function buildChart(type) {
+  const ctx = document.getElementById('barChart').getContext('2d');
+  if (barChart) barChart.destroy();
+  const legend = document.getElementById('chartLegend');
+
+  const baseOpts = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10, family: 'Plus Jakarta Sans' }, color: '#6B8299', maxRotation: 30, autoSkip: false }, grid: { display: false }, border: { color: '#D6E4F0' } },
+      y: { ticks: { font: { size: 10, family: 'Plus Jakarta Sans' }, color: '#6B8299' }, grid: { color: '#EEF3FA' }, border: { display: false } }
+    }
+  };
+
+  if (type === 'delta') {
+    legend.innerHTML = `
+      <div class="legend-item"><span class="legend-dot" style="background:#00B8A9"></span>Crescimento</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#E05252"></span>Queda</div>`;
+    barChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{ label: 'Variação %', data: deltas,
+          backgroundColor: deltas.map(v => v >= 0 ? 'rgba(0,184,169,0.75)' : 'rgba(224,82,82,0.75)'),
+          borderRadius: 4 }]
+      },
+      options: { ...baseOpts, scales: { ...baseOpts.scales,
+        y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } }
+      }}
+    });
+    return;
+  }
+
+  legend.innerHTML = `
+    <div class="legend-item"><span class="legend-dot" style="background:#00B8A9"></span>Abril 2026</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1E6FBF"></span>Maio 2026</div>`;
+  const d = data[type];
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Abril', data: d.abril, backgroundColor: 'rgba(0,184,169,0.75)', borderRadius: 4 },
+        { label: 'Maio',  data: d.maio,  backgroundColor: 'rgba(30,111,191,0.75)', borderRadius: 4 },
+      ]
+    },
+    options: { ...baseOpts, scales: { ...baseOpts.scales,
+      y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks,
+        callback: v => type === 'revenue' ? '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K' : v) : v
+      }}
+    }}
+  });
+}
+
+function switchTab(btn, type) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildChart(type);
+}
+
+buildChart('bookings');
+</script>
+</body>
+</html>
